@@ -1,52 +1,99 @@
-# ETL (Extract Transform Load) – Airflow Showcase Project
+# Extract Transform Load pipeline with Airflow
 
-Simple, Airflow project that demonstrates a complete ETL pipeline using the official Apache Airflow 3.1+ Docker setup.
+**Project Summary:**
+Hands-on Apache Airflow 3.1+ ETL pipeline that fetches live weather data, transforms it, and loads it into PostgreSQL. Fully containerized with Docker, uses CeleryExecutor + Redis for scalable task orchestration, and demonstrates a realistic Airflow pipeline.
 
-Perfect as a portfolio piece or interview take-home task.
+[![Python](https://img.shields.io/badge/Python-3.12-blue)](https://www.python.org/)
+[![Airflow](https://img.shields.io/badge/Apache%20Airflow-3.1+-orange)](https://airflow.apache.org/)
+[![Docker](https://img.shields.io/badge/Docker-24-blue)](https://www.docker.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)](https://www.postgresql.org/)
+[![Redis](https://img.shields.io/badge/Redis-7.2-red)](https://redis.io/)
 
-### Architecture (exactly like most production deployments in 2025)
-- Executor:      CeleryExecutor (scalable, battle-tested)
-- Task queue:    Redis (in-memory, extremely fast)
-- Metadata DB:   PostgreSQL 16
-- UI:            Modern FastAPI apiserver (port 8080)
+---
+
+## What I Learned / Key Takeaways
+
+- Designing and implementing **Airflow DAGs**
+- Using **CeleryExecutor + Redis** for scalable task orchestration
+- Managing **PostgreSQL connections** and safe data inserts with Python
+- Handling **XComs properly**, avoiding serialization issues
+- Containerized development with **Docker Compose** for Airflow services
+- Debugging DAGs and tasks
+
+---
+
+## Architecture
+
+This setup mirrors **production-like deployments (2025 standards):**
+
+| Component        | Technology / Version            | Notes |
+|-----------------|---------------------------------|-------|
+| Executor        | CeleryExecutor                  | Scalable, battle-tested |
+| Task Queue      | Redis                           | Fast, in-memory broker |
+| Metadata DB     | PostgreSQL 16                   | Dedicated volume, isolated |
+| Web UI / API    | Airflow FastAPI apiserver (8080)| Modern, responsive |
+
+---
 
 ## Features
-- Latest Airflow 3.1+ with modern FastAPI UI (apiserver on port 8080)
-- Fully containerised with official `apache/airflow` images
-- Dedicated PostgreSQL volume – does NOT interfere with any other Airflow/Postgres instances you have
-- No extra Python dependencies – everything is provided by the official image
-- Ready for any public API → just drop your DAG into `dags/`
 
-## Quickstart (Docker – recommended, works on Windows/macOS/Linux)
+- Fully containerized with **official Apache Airflow 3.1+ Docker images**
+- Uses **CeleryExecutor + Redis** for real-world task orchestration
+- Isolated PostgreSQL volume – safe to run alongside other instances
+- Modern Airflow UI with FastAPI apiserver
+- Ready to run with any public API – just drop DAGs into `dags/`
+- **Zero extra Python dependencies** beyond the official Airflow image
+- Example ETL DAG included: fetches live weather data and stores it in PostgreSQL
+
+---
+
+## Quickstart (Docker – Windows/macOS/Linux)
 
 ```bash
-# 1. Clone the repo
+# 1. Clone the repository
 git clone https://github.com/dominik-mikulski/Airflow.git
 cd Airflow
 
-# 2. Create the required .env file
+# 2. Add your API key to dags/etl.py
+Open https://openweathermap.org/, setup account, copy API key. Open dags/etl.py and follow steps. 
+
+# 3. Create the .env file with correct user ID
 # Windows PowerShell:
 'AIRFLOW_UID=50000' | Set-Content -Path .env -Encoding UTF8NoBOM
 
 # macOS / Linux / WSL:
 echo "AIRFLOW_UID=$(id -u)" > .env
 
-# 3. Initialize the database (only needed the first time)
+# 4. Initialize Airflow DB (first time only)
 docker compose up airflow-init
 
-# 4. Start Airflow in background
+# 5. Start Airflow services in background
 docker compose up -d
 
-# 5. Access UIs
-AIRFLOW: http://localhost:8080 # login: airflow / airflow
-ADMINER: http://localhost:8081 # change sytem to PostgreSQL, Server: postgres:5432, login: ariflow\airflow
+# 6. Access the UIs
+Airflow:   http://localhost:8080   (login: airflow / airflow)
+Adminer:   http://localhost:8081   (System: PostgreSQL, Server: postgres:5432, login: airflow / airflow)
 
-# 6. STOP EVERYTHING
-docker compose down -v # this removes the container and one dedicate volume in it.
+# 7. Stop everything and clean up
+docker compose down -v
+```
 
-├── dags/            ← put your DAGs here
-├── data/            ← example output directory (gitignored)
+---
+
+## Project Structure
+
+```
+├── dags/            ← Put your DAGs here
+├── data/            ← Example output directory (gitignored)
 ├── logs/            ← Airflow logs (gitignored)
 ├── docker-compose.yaml
 └── README.md
+```
+
+## Future Improvements
+- Add **logging** and better **error handling**
+- Include **unit and integration tests**
+- Implement **graceful task failure recovery**
+- Enhance **security and network separation**
+- Currently **not production-ready**; this is a showcase and learning project.
 
