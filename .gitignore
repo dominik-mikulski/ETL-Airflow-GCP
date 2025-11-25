@@ -1,0 +1,78 @@
+# ───────────────────────────────
+# Airflow core files
+# ───────────────────────────────
+airflow.db
+airflow-webserver.pid
+webserver_config.py
+*.db
+logs/
+airflow.cfg
+
+# Airflow standalone / local runtime
+standalone_admin_password.txt
+
+# ───────────────────────────────
+# Python / packaging
+# ───────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.mypy_cache/
+.pytest_cache/
+.hypothesis/
+
+# ───────────────────────────────
+# IDE / editors
+# ───────────────────────────────
+.idea/
+.vscode/
+*.sublime-*
+*.swp
+*.swo
+*~
+
+# ───────────────────────────────
+# OS junk
+# ───────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ───────────────────────────────
+# Your project-specific
+# ───────────────────────────────
+# Keep the folders but ignore everything inside (except .gitkeep)
+data/*
+!data/.gitkeep
+
+# env variables and secrets
+.env
+*.env
+secrets/
+credentials/
+
+# Docker (if you add Dockerfile later)
+.docker/
+
+# Optional: ignore the whole logs folder content
+logs/**/*
+!logs/.gitkeep
