@@ -69,6 +69,8 @@ data/*
 *.env
 secrets/
 credentials/
+keys/*
+!keys/.gitkeep
 
 # Docker (if you add Dockerfile later)
 .docker/
